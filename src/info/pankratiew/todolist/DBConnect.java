@@ -61,7 +61,7 @@ public class DBConnect {
                 	// Сортируем полученные данные
     				System.out.print(resultset.getInt("ID") + "; ");
     				
-    				TF.addLabels(resultset.getString("TITLE"), resultset.getString("DESCRIPTION")); // Добавляем задачу на фрейм
+    				TF.addLabels(resultset.getString("TITLE"), resultset.getString("DESCRIPTION"),resultset.getInt("ID")); // Добавляем задачу на фрейм
     				TodoFrame.LastID = resultset.getInt("ID");
     				
     			}
@@ -69,7 +69,7 @@ public class DBConnect {
                 
                 stmt.close();
             } finally {
-            	System.out.println("eee");
+            	System.out.println("\nЗапрос выполнен");
                 con.close();
             }
         } catch (Exception e) {
