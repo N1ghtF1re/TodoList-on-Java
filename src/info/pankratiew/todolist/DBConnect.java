@@ -60,8 +60,11 @@ public class DBConnect {
                 while(resultset.next()) {
                 	// Сортируем полученные данные
     				System.out.print(resultset.getInt("ID") + "; ");
-    				
-    				TF.addLabels(resultset.getString("TITLE"), resultset.getString("DESCRIPTION"),resultset.getInt("ID")); // Добавляем задачу на фрейм
+    				Task task = new Task();
+    				task.setTitle(resultset.getString("TITLE"));
+    				task.setDescription(resultset.getString("DESCRIPTION"));
+    				task.setID(resultset.getInt("ID"));
+    				TF.addLabels(task); // Добавляем задачу на фрейм
     				TodoFrame.LastID = resultset.getInt("ID");
     				
     			}

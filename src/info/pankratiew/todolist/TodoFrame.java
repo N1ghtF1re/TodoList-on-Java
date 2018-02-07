@@ -26,6 +26,8 @@ import javax.swing.BoxLayout;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.JScrollPane;
@@ -81,7 +83,7 @@ public class TodoFrame extends JFrame implements  MouseListener{
 	 * @param Title
 	 * @param Description
 	 */
-	void addLabels(String Title, String Description, int ID) {
+	void addLabels(Task task) {
        	JLabel lbl1 = new JLabel();
     	JLabel lbl2 = new JLabel();
     	
@@ -89,11 +91,11 @@ public class TodoFrame extends JFrame implements  MouseListener{
 		
 		tmpPanel.addMouseListener(this);
 		tmpPanel.setLayout(new MigLayout("wrap"));
-		lbl1.setText(Title);
-		lbl2.setText(Description);
+		lbl1.setText(task.getTitle());
+		lbl2.setText(task.getDescription());
 		tmpPanel.add(lbl1);
 		tmpPanel.add(lbl2);
-		tmpPanel.setName(""+ID);
+		tmpPanel.setName(""+task.getID());
 		tmpPanel.setBorder(new CompoundBorder(new EmptyBorder(5,5,5,5),BorderFactory.createLineBorder(Color.black)));
 		
 		listPanel.add(tmpPanel,0);
@@ -114,7 +116,12 @@ public class TodoFrame extends JFrame implements  MouseListener{
 					throw new NoTextException(); // Generate Exception
 				}
 				connect.newQuery("INSERT INTO TODO values (" + ++LastID + ",\'" + ttl + "\', \'" + dsc + "\')");
-				addLabels(ttl, dsc, LastID);
+				Task task = new Task();
+				task.setTitle(ttl);
+				task.setDescription(dsc);
+				task.setID(LastID);
+				
+				addLabels(task);
 				
 				tf_addNewTodo.setText("");
 				ta_addDesc.setText("");
@@ -128,6 +135,9 @@ public class TodoFrame extends JFrame implements  MouseListener{
 	public void mouseClicked(MouseEvent arg0) {
 		System.out.println(arg0.getComponent().getName());
 		System.out.println(arg0.getID());
+		for(Component c : ((Container) arg0.getComponent()).getComponents()) {
+			System.out.println("xax");
+		}
 		int isDelete = JOptionPane.showConfirmDialog(this, "Точно удаляем?", "Удалить?", JOptionPane.YES_NO_OPTION);
 		if(isDelete == JOptionPane.YES_OPTION) {
 			System.out.println("Удаляем");
