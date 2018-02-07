@@ -11,7 +11,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import javax.swing.JLabel;
+
+
 
 public class DBConnect {
 	/*public static void main(String[] args) {
@@ -52,15 +53,11 @@ public class DBConnect {
             Connection con = DriverManager.getConnection(CONNECTION);
             try {
                 Statement stmt = con.createStatement();
-                ResultSet resultset = stmt.executeQuery("SELECT * FROM TODO");
+                ResultSet resultset = stmt.executeQuery("SELECT * FROM TODO ORDER by id DESC");
            
                 while(resultset.next()) {
-                	JLabel lbl = new JLabel();
     				System.out.print(resultset.getInt("ID") + "; ");
-    				//System.out.print(resultset.getString("TITLE") + "; ");
-    				//System.out.println(resultset.getString("DESCRIPTION"));
-    				lbl.setText(resultset.getString("TITLE") + "\n" + resultset.getString("DESCRIPTION"));
-    				TF.add(lbl);
+    				TF.addLabels(resultset.getString("TITLE"), resultset.getString("DESCRIPTION"));;
     				TodoFrame.LastID = resultset.getInt("ID");
     			}
                 //stmt.executeUpdate(query);
