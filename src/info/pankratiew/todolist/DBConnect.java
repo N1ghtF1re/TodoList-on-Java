@@ -15,11 +15,10 @@ import java.sql.Statement;
 
 
 public class DBConnect {
-	/*public static void main(String[] args) {
-		DBConnect m = new DBConnect();
-        m.newQuery("INSERT INTO TODO values (1,\'Кеклол\', \'Кеклолвотэтоповорот\')");
-		m.KekLol();
-    }
+
+/** 
+ * Make a query in the database
+ * @param query
  */
    void newQuery(String query) {
         try {
@@ -37,7 +36,6 @@ public class DBConnect {
                 
                 stmt.close();
             } finally {
-            	System.out.println("eee");
                 con.close();
             }
         } catch (Exception e) {
@@ -45,7 +43,11 @@ public class DBConnect {
         }
     }
     
-    void KekLol (TodoFrame TF) {
+   	/** 
+   	 * Add tasks from the DB
+   	 * @param TF
+   	 */
+    void addLabelFromDB (TodoFrame TF) {
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             final String CONNECTION =
@@ -53,11 +55,13 @@ public class DBConnect {
             Connection con = DriverManager.getConnection(CONNECTION);
             try {
                 Statement stmt = con.createStatement();
-                ResultSet resultset = stmt.executeQuery("SELECT * FROM TODO");
+                ResultSet resultset = stmt.executeQuery("SELECT * FROM TODO"); // Извлекаем из БД все записи
            
                 while(resultset.next()) {
+                	// Сортируем полученные данные
     				System.out.print(resultset.getInt("ID") + "; ");
-    				TF.addLabels(resultset.getString("TITLE"), resultset.getString("DESCRIPTION"));
+    				
+    				TF.addLabels(resultset.getString("TITLE"), resultset.getString("DESCRIPTION")); // Добавляем задачу на фрейм
     				TodoFrame.LastID = resultset.getInt("ID");
     				
     			}

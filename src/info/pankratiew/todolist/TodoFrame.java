@@ -33,13 +33,18 @@ import javax.swing.JScrollPane;
 public class TodoFrame extends JFrame{
 	public static int LastID = 0;
 	private static final long serialVersionUID = 1L;
+	
 	JTextField tf_addNewTodo = new JTextField(15);
 	JTextArea ta_addDesc = new JTextArea("Описание", 10, 30); 
 	JLabel label = new JLabel("Добавить новую задачу");
 	JButton btn_add = new JButton("Добавить");
-	DBConnect m = new DBConnect();
+	DBConnect connect = new DBConnect();
 	JPanel mainPanel = new JPanel();
 	JPanel listPanel = new JPanel();
+	
+	/**
+	 * Window Constructor
+	 */
 	public TodoFrame() {
 		setTitle("Todo-List");
 		setLayout(new GridLayout(1, 2));
@@ -53,7 +58,7 @@ public class TodoFrame extends JFrame{
 		
 		add(mainPanel);
 		//add(listPanel);
-		JScrollPane scroll = new JScrollPane(listPanel);
+		JScrollPane scroll = new JScrollPane(listPanel); // Add scrollbar 
 		scroll.setBorder(null);
         scroll.setPreferredSize(new Dimension(80,100));
         add(scroll, BorderLayout.CENTER);
@@ -62,11 +67,15 @@ public class TodoFrame extends JFrame{
 		setSize(800,600);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
-		m.KekLol(this);
+		connect.addLabelFromDB (this);
 		System.out.println(LastID);
 	}
 
-	
+	/**
+	 * Add tasks to frame
+	 * @param Title
+	 * @param Description
+	 */
 	void addLabels(String Title, String Description) {
        	JLabel lbl1 = new JLabel();
     	JLabel lbl2 = new JLabel();
@@ -83,6 +92,12 @@ public class TodoFrame extends JFrame{
 		
 		listPanel.add(tmpPanel,0);
 	}
+	
+	/**
+	 * onClick button - add new label
+	 * @author Win10
+	 *
+	 */
 	class ActionListenerBTN implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -92,13 +107,13 @@ public class TodoFrame extends JFrame{
 				if ((ttl.replaceAll(" ", "").equals("")) || (dsc.replaceAll(" ", "").equals(""))) {
 					throw new NoTextException();
 				}
-				m.newQuery("INSERT INTO TODO values (" + ++LastID + ",\'" + ttl + "\', \'" + dsc + "\')");
+				connect.newQuery("INSERT INTO TODO values (" + ++LastID + ",\'" + ttl + "\', \'" + dsc + "\')");
 				addLabels(ttl, dsc);
 				
 				tf_addNewTodo.setText("");
 				ta_addDesc.setText("");
 			} catch(NoTextException e1) {
-				JOptionPane.showMessageDialog(null, "Заголовок/Описание не могут быть пустыми");
+				JOptionPane.showMessageDialog(null, "Заголовок/Описание не могут быть пустыми"); // If title/description empty - show error
 			}
 		}
 	}
