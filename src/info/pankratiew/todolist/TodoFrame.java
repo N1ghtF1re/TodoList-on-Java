@@ -31,7 +31,7 @@ import java.awt.GridLayout;
 import javax.swing.JScrollPane;
 
 public class TodoFrame extends JFrame{
-	public static int LastID;
+	public static int LastID = 0;
 	private static final long serialVersionUID = 1L;
 	JTextField tf_addNewTodo = new JTextField(15);
 	JTextArea ta_addDesc = new JTextArea("Описание", 10, 30); 
@@ -81,7 +81,7 @@ public class TodoFrame extends JFrame{
 		
 		tmpPanel.setBorder(new CompoundBorder(new EmptyBorder(5,5,5,5),BorderFactory.createLineBorder(Color.black)));
 		
-		listPanel.add(tmpPanel);
+		listPanel.add(tmpPanel,0);
 	}
 	class ActionListenerBTN implements ActionListener {
 		@Override

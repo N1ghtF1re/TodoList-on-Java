@@ -53,12 +53,13 @@ public class DBConnect {
             Connection con = DriverManager.getConnection(CONNECTION);
             try {
                 Statement stmt = con.createStatement();
-                ResultSet resultset = stmt.executeQuery("SELECT * FROM TODO ORDER by id DESC");
+                ResultSet resultset = stmt.executeQuery("SELECT * FROM TODO");
            
                 while(resultset.next()) {
     				System.out.print(resultset.getInt("ID") + "; ");
-    				TF.addLabels(resultset.getString("TITLE"), resultset.getString("DESCRIPTION"));;
+    				TF.addLabels(resultset.getString("TITLE"), resultset.getString("DESCRIPTION"));
     				TodoFrame.LastID = resultset.getInt("ID");
+    				
     			}
                 //stmt.executeUpdate(query);
                 
