@@ -1,3 +1,10 @@
+/**
+ * @author Pankratiew Alexandr
+ *
+ * @site pankratiew.info
+ *
+ */
+
 package info.pankratiew.todolist;
 
 import java.sql.Connection;

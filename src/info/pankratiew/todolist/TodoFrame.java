@@ -41,6 +41,15 @@ public class TodoFrame extends JFrame{
 		m.KekLol(this);
 		System.out.println(LastID);
 	}
+	void addNewLabel(String txt) {
+		JLabel Newlbl = new JLabel();
+		Newlbl.setText(txt);
+		System.out.println(Newlbl.getText());
+		this.add(Newlbl);
+		this.validate();
+	}
+	
+	
 	class ActionListenerBTN implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -51,7 +60,7 @@ public class TodoFrame extends JFrame{
 					throw new NoTextException();
 				}
 				m.newQuery("INSERT INTO TODO values (" + ++LastID + ",\'" + ttl + "\', \'" + dsc + "\')");
-				ShowTodoFrame.addNewLabel(ttl + "\n" + dsc);
+				addNewLabel(ttl + "\n" + dsc);
 			} catch(NoTextException e1) {
 				JOptionPane.showMessageDialog(null, "Заголовок/Описание не могут быть пустыми");
 			}
