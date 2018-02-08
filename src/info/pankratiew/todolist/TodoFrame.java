@@ -35,8 +35,9 @@ import javax.swing.JScrollPane;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Date;
+
 
 public class TodoFrame extends JFrame implements  MouseListener{
 	public static int LastID = 0;
@@ -89,8 +90,9 @@ public class TodoFrame extends JFrame implements  MouseListener{
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		
 		connect.addLabelFromDB (this);
+		
 		//connect.newQuery("ALTER TABLE TODO ADD tdate TIMESTAMP");
-		connect.newQuery("ALTER TABLE TODO ALTER COLUMN DESCRIPTION LONGVARCHAR");
+		//connect.newQuery("ALTER TABLE TODO ALTER COLUMN DESCRIPTION LONGVARCHAR");
 		System.out.println(LastID);
 	}
 
@@ -100,11 +102,15 @@ public class TodoFrame extends JFrame implements  MouseListener{
 	 * @param Description
 	 */
 	void addLabels(Task task) {
-		Date date = new Date();
-		task.setData(date);
+
+		System.out.println(new java.sql.Date( (new java.util.Date()).getTime()));
+		SimpleDateFormat formatDate = new SimpleDateFormat("dd.mm.YY HH:mm");
+
 		
-		SimpleDateFormat formatDate = new SimpleDateFormat("dd.MM.yyyy H:m:s");
-		String strDate = formatDate.format(date);
+		String strDate = (task.getData() != null) ? formatDate.format(task.getData()) : "null";
+	
+		System.out.println(task.getData());
+		
        	JLabel lbl1 = new JLabel();
     	JLabel lbl2 = new JLabel();
     	JLabel lbl3 = new JLabel();
@@ -120,7 +126,7 @@ public class TodoFrame extends JFrame implements  MouseListener{
 		lbl3.setText(String.format("%-70s%10s%n","", strDate));
 		lbl1.setFont(new Font("Arial", Font.BOLD, 16));
 		lbl2.setFont(new Font("Arial", Font.ITALIC, 12));
-		
+		//System.out.println();
 		
 		
 		lbl1.setName("TaskName");
@@ -146,15 +152,16 @@ public class TodoFrame extends JFrame implements  MouseListener{
 			try {
 				String ttl = tf_addNewTodo.getText();
 				String dsc = ta_addDesc.getText();
+				Timestamp currdatetime = new Timestamp(java.util.Calendar.getInstance().getTimeInMillis());
 				if ((ttl.replaceAll(" ", "").equals("")) || (dsc.replaceAll(" ", "").equals(""))) {
 					throw new NoTextException(); // Generate Exception
 				}
-				connect.newQuery("INSERT INTO TODO values (" + ++LastID + ",\'" + ttl + "\', \'" + dsc + "\')");
+				connect.newQuery("INSERT INTO TODO values (" + ++LastID + ",\'" + ttl + "\', \'" + dsc + "\', \'" + currdatetime + "\')");
 				Task task = new Task();
 				task.setTitle(ttl);
 				task.setDescription(dsc);
 				task.setID(LastID);
-				
+				task.setData(currdatetime);
 				addLabels(task);
 				
 				tf_addNewTodo.setText("");

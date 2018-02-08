@@ -6,13 +6,13 @@
  */
 package info.pankratiew.todolist;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 public class Task {
 	private String Title;
 	private String Description;
 	private int ID;
-	private Date data;
+	private Timestamp data;
 	
 	public int getID() {
 		return ID;
@@ -32,10 +32,10 @@ public class Task {
 	public void setDescription(String description) {
 		Description = description;
 	}
-	public Date getData() {
+	public Timestamp getData() {
 		return data;
 	}
-	public void setData(Date data) {
+	public void setData(Timestamp data) {
 		this.data = data;
 	}
 	

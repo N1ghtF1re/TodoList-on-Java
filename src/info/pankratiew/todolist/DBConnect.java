@@ -59,11 +59,13 @@ public class DBConnect {
            
                 while(resultset.next()) {
                 	// Сортируем полученные данные
+
     				System.out.print(resultset.getInt("ID") + "; ");
     				Task task = new Task();
     				task.setTitle(resultset.getString("TITLE"));
     				task.setDescription(resultset.getString("DESCRIPTION"));
     				task.setID(resultset.getInt("ID"));
+    				task.setData(resultset.getTimestamp("TDATE"));
     				TF.addLabels(task); // Добавляем задачу на фрейм
     				TodoFrame.LastID = resultset.getInt("ID");
     				
