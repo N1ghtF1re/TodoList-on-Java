@@ -6,10 +6,13 @@
  */
 package info.pankratiew.todolist;
 
+import java.util.Date;
+
 public class Task {
 	private String Title;
 	private String Description;
 	private int ID;
+	private Date data;
 	
 	public int getID() {
 		return ID;
@@ -28,6 +31,12 @@ public class Task {
 	}
 	public void setDescription(String description) {
 		Description = description;
+	}
+	public Date getData() {
+		return data;
+	}
+	public void setData(Date data) {
+		this.data = data;
 	}
 	
 	
