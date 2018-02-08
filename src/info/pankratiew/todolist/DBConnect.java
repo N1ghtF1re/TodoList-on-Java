@@ -10,6 +10,7 @@ package info.pankratiew.todolist;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 
@@ -20,7 +21,7 @@ public class DBConnect {
  * Make a query in the database
  * @param query
  */
-   void newQuery(String query) {
+   void newQuery(String query) throws SQLException {
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             final String CONNECTION =
@@ -38,16 +39,16 @@ public class DBConnect {
             } finally {
                 con.close();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} 
     }
     
    	/** 
    	 * Add tasks from the DB
    	 * @param TF
    	 */
-    void addLabelFromDB (TodoFrame TF) {
+    void addLabelFromDB (TodoFrame TF) throws SQLException {
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
             final String CONNECTION =
@@ -77,8 +78,8 @@ public class DBConnect {
             	System.out.println("\nЗапрос выполнен");
                 con.close();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        } catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} 
     }
 }

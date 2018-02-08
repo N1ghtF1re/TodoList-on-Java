@@ -35,6 +35,7 @@ import javax.swing.JScrollPane;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 
@@ -63,6 +64,7 @@ public class TodoFrame extends JFrame implements  MouseListener{
 		tf_addNewTodo.setBorder(BorderFactory.createLineBorder(Color.black));
 		
 		listPanel.setLayout(new BoxLayout(listPanel, BoxLayout.Y_AXIS));
+		//mainPanel.setLayout();
 		
 		mainPanel.add(label);
 		mainPanel.add(tf_addNewTodo);
@@ -88,8 +90,16 @@ public class TodoFrame extends JFrame implements  MouseListener{
 		
 		setSize(800,600);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		try {
+			connect.addLabelFromDB (this);
+		} catch (SQLException e1) {
+			JOptionPane.showMessageDialog(null, "<html><body style = 'align:center'><html><h2>Произошла ошибка базы данных.</h2>" 
+					+	"<p>Вы запустили две копии приложения</p>"
+					+   "<p>Закройте прошлую копию приложения и откройте заново</p></body></html>" + " ", "Ошибка", JOptionPane.CLOSED_OPTION);
+			dispose();
+			System.exit(0);
+		}
 		
-		connect.addLabelFromDB (this);
 		
 		//connect.newQuery("ALTER TABLE TODO ADD tdate TIMESTAMP");
 		//connect.newQuery("ALTER TABLE TODO ALTER COLUMN DESCRIPTION LONGVARCHAR");
@@ -103,13 +113,12 @@ public class TodoFrame extends JFrame implements  MouseListener{
 	 */
 	void addLabels(Task task) {
 
-		System.out.println(new java.sql.Date( (new java.util.Date()).getTime()));
 		SimpleDateFormat formatDate = new SimpleDateFormat("dd.mm.YY HH:mm");
 
 		
 		String strDate = (task.getData() != null) ? formatDate.format(task.getData()) : "null";
 	
-		System.out.println(task.getData());
+
 		
        	JLabel lbl1 = new JLabel();
     	JLabel lbl2 = new JLabel();
@@ -157,6 +166,7 @@ public class TodoFrame extends JFrame implements  MouseListener{
 					throw new NoTextException(); // Generate Exception
 				}
 				connect.newQuery("INSERT INTO TODO values (" + ++LastID + ",\'" + ttl + "\', \'" + dsc + "\', \'" + currdatetime + "\')");
+				
 				Task task = new Task();
 				task.setTitle(ttl);
 				task.setDescription(dsc);
@@ -168,6 +178,14 @@ public class TodoFrame extends JFrame implements  MouseListener{
 				ta_addDesc.setText("");
 			} catch(NoTextException e1) {
 				JOptionPane.showMessageDialog(null, "Заголовок/Описание не могут быть пустыми"); // If title/description empty - show error
+			} catch (SQLException e2) {
+				JOptionPane.showMessageDialog(null, "<html><body style = 'align:center'><html><h2>Произошла ошибка базы данных.</h2>" 
+												+	"<p>Возможно, описание слишком длинное</p>"
+												+   "<p>По непонятным мне причинам, <span style='background: red; color:white'>JDBC</span><br>"
+												+	"(База данных Java) не хочет хавать" 
+												+   "Тип longvarchar.</p><p> После перехода на MySQL"
+												+   "Проблема должна решиться, <br>но эт потом.</p> Пока"
+												+   "Макс. длина описания - <h3><b style='background: red; color:white;font-weight:bold;display:inline-block'>100 символов</b></h3></body></html>" + " ", "Ошибка", JOptionPane.CLOSED_OPTION);
 			}
 		}
 	}
@@ -189,7 +207,13 @@ public class TodoFrame extends JFrame implements  MouseListener{
 		if(isDelete == JOptionPane.YES_OPTION) {
 			System.out.println("Удаляем");
 			listPanel.remove(arg0.getComponent());
-			connect.newQuery("DELETE FROM TODO WHERE ID = " + arg0.getComponent().getName());
+			try {
+				connect.newQuery("DELETE FROM TODO WHERE ID = " + arg0.getComponent().getName());
+			} catch (SQLException e2) {
+				JOptionPane.showMessageDialog(null, "<html><body style = 'align:center'><html><h2>Произошла ошибка базы данных.</h2></body></html>",
+						"Ошибка", JOptionPane.CLOSED_OPTION);
+
+			}
 			revalidate();
             repaint();
 		}
