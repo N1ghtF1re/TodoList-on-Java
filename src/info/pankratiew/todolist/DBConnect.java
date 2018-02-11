@@ -13,8 +13,6 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Calendar;
-
 
 
 public class DBConnect {
@@ -69,12 +67,12 @@ public class DBConnect {
                 	break;
                 	
                 	case TODAY:
-                	java.sql.Date currDate = new java.sql.Date(System.currentTimeMillis());
+                	Date currDate = new Date(System.currentTimeMillis());
                     addQuery = " WHERE need_date = \'" + currDate + "\'";	
                     break;
                     
                 	case TOMOROW: 
-                	java.sql.Date nextDate = new java.sql.Date(System.currentTimeMillis() + 24*60*60*1000);
+                	Date nextDate = new Date(System.currentTimeMillis() + 24*60*60*1000);
                     addQuery = " WHERE need_date = \'" + nextDate + "\'";	
                     break;
                 }
