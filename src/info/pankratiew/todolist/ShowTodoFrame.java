@@ -12,7 +12,6 @@ public class ShowTodoFrame {
 	
 	public static void main(String args[]) {
 		TF.setVisible(true);
-	
 	}
 	
 }

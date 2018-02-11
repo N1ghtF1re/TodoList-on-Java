@@ -6,6 +6,7 @@
  */
 package info.pankratiew.todolist;
 
+import java.util.Date;
 import java.sql.Timestamp;
 
 public class Task {
@@ -13,7 +14,7 @@ public class Task {
 	private String Description;
 	private int ID;
 	private Timestamp data;
-	
+	private Date needDate;
 	public int getID() {
 		return ID;
 	}
@@ -27,18 +28,23 @@ public class Task {
 		Title = title;
 	}
 	public String getDescription() {
-		final int gran = 50;
+		final int gran = 100;
 		if (Description.length() < gran) {
 			return Description;
 		} else {
 			java.lang.StringBuffer strBuf = new java.lang.StringBuffer(Description);
-	
+			
 			for (int i = gran; i <= Description.length(); i += gran) {
-				while (strBuf.charAt(i) != ' ') {
-					i++;
+				if(Description.contains(" ")) {
+					while (strBuf.charAt(i) != ' ') {
+						i--;
+						if((i <= 0) || (i >= Description.length())) {
+							break;
+						}
+					}
 				}
 				strBuf.insert(i, "<br>");
-				System.out.println(strBuf.toString());
+				//System.out.println(strBuf.toString());
 			}
 		return strBuf.toString();
 			
@@ -52,6 +58,12 @@ public class Task {
 	}
 	public void setData(Timestamp data) {
 		this.data = data;
+	}
+	public Date getNeedDate() {
+		return needDate;
+	}
+	public void setNeedDate(Date date) {
+		this.needDate = date;
 	}
 	
 	
