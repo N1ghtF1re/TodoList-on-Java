@@ -37,6 +37,7 @@ import javax.swing.JScrollPane;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -230,9 +231,27 @@ public class TodoFrame extends JFrame implements  MouseListener{
 				task.setData(currdatetime);
 				task.setNeedDate(c1.getTime());
 				
+				System.out.println(status);
 				
-				addLabels(task);
+				switch(status) {
+					case ALL:
+						addLabels(task);
+						break;
+					case TODAY:
+						if(sdf.format(task.getNeedDate()).equals(sdf.format(new Date(System.currentTimeMillis())))) {
+							addLabels(task);
+						}
+						break;
+					case TOMOROW:
+						if(sdf.format(task.getNeedDate()).equals(sdf.format(new Date(System.currentTimeMillis() + 24*60*60*1000 )))) {
+							addLabels(task);
+							System.out.println(":C");
+						}
+						break;
+						
 				
+				}
+ 				
 				tf_addNewTodo.setText("");
 				ta_addDesc.setText("");
 			} catch(NoTextException e1) {
@@ -323,3 +342,6 @@ public class TodoFrame extends JFrame implements  MouseListener{
 	}
 
 }
+
+
+

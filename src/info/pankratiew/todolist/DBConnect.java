@@ -51,7 +51,7 @@ public class DBConnect {
    	 * Add tasks from the DB
    	 * @param TF
    	 */
-    @SuppressWarnings("deprecation")
+
 	void addLabelFromDB (TodoFrame TF) throws SQLException {
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
@@ -95,7 +95,8 @@ public class DBConnect {
     			
 
     			}
-                resultset  = stmt.executeQuery("SELECT id FROM TODO ORDER BY id"); 
+                resultset  = stmt.executeQuery("SELECT id FROM TODO ORDER BY id DESC { LIMIT 1 }");
+                
                 while(resultset.next()) {
                 	TodoFrame.LastID = resultset.getInt("ID");	
                 	System.out.println(TodoFrame.LastID);
