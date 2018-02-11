@@ -64,16 +64,21 @@ public class DBConnect {
                 Statement stmt = con.createStatement();
                 
                 String addQuery = "";
-                if(TF.status == CurrStatus.ALL) {
-                	addQuery = "";
-                } else if (TF.status == CurrStatus.TODAY) {
+                switch(TF.status) {
+                	case ALL:
+                	break;
+                	
+                	case TODAY:
                 	java.sql.Date currDate = new java.sql.Date(System.currentTimeMillis());
-                	addQuery = " WHERE need_date = \'" + currDate + "\'";
-                } else if (TF.status == CurrStatus.TOMOROW) {
-                	java.sql.Date nextDate = new java.sql.Date(System.currentTimeMillis());
-                	nextDate.setDate(nextDate.getDate() + 1);
-                	addQuery = " WHERE need_date = \'" + nextDate + "\'";
+                    addQuery = " WHERE need_date = \'" + currDate + "\'";	
+                    break;
+                    
+                	case TOMOROW: 
+                	java.sql.Date nextDate = new java.sql.Date(System.currentTimeMillis() + 24*60*60*1000);
+                    addQuery = " WHERE need_date = \'" + nextDate + "\'";	
+                    break;
                 }
+               
                 
                 System.out.println("SELECT * FROM TODO" + addQuery);
                 ResultSet resultset = stmt.executeQuery("SELECT * FROM TODO" + addQuery); // Извлекаем из БД все записи"

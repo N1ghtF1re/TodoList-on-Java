@@ -257,15 +257,13 @@ public class TodoFrame extends JFrame implements  MouseListener{
 			listPanel.removeAll();
             
 			if (e.getSource() == btnAllTask) {
-				System.out.println("ALL");
 				status = CurrStatus.ALL;
 			} else if (e.getSource() == btnTodayTask) {
-				System.out.println("TODAY");
 				status = CurrStatus.TODAY;
 			} else if (e.getSource() == btnTomorrowTask) {
-				System.out.println("TOMORROW");
 				status = CurrStatus.TOMOROW;
 			}
+			
 			DBWriteLabels();
 			
 				
